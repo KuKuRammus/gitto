@@ -43,6 +43,9 @@ axios.get(`${config.api.gitlab}/projects`, {
     }
 
     // Fetch and filter toggl entries
+    const togglDateSince = new Date();
+    togglDateSince.setDate(togglDateSince.getDate() + 2);
+    const togglEndDate = togglDateSince.toISOString().substr(0, 10);
     logger('Fetching Toggl entries');
     axios.get(`${config.api.toggl}/summary`, {
         params: {
@@ -50,7 +53,8 @@ axios.get(`${config.api.gitlab}/projects`, {
             workspace_id: config.toggl.workspace_id,
             since: config.toggl.time_entries_since,
             grouping: 'tags',
-            subgrouping: 'time_entries'
+            subgrouping: 'time_entries',
+            until: togglEndDate
         },
         auth: {
             username: config.keys.toggl,
@@ -117,6 +121,7 @@ axios.get(`${config.api.gitlab}/projects`, {
     });
 
 }).catch((e) => {
+    console.log(e);
     logger('[ERROR] Error while trying fetch project list from GitLab');
 });
 
