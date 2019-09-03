@@ -121,7 +121,6 @@ axios.get(`${config.api.gitlab}/projects`, {
     });
 
 }).catch((e) => {
-    console.log(e);
     logger('[ERROR] Error while trying fetch project list from GitLab');
 });
 
